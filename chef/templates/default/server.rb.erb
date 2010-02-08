@@ -1,0 +1,32 @@
+Chef::Log::Formatter.show_time = true
+
+log_level          :info
+log_location       '/var/log/chef/chef-server.log'
+
+ssl_verify_mode    :verify_none
+registration_url   'https://<%= @node[:chef][:server_fqdn] %>'
+openid_url         'https://<%= @node[:chef][:server_fqdn] %>:444'
+template_url       'https://<%= @node[:chef][:server_fqdn] %>'
+remotefile_url     'https://<%= @node[:chef][:server_fqdn] %>'
+search_url         'https://<%= @node[:chef][:server_fqdn] %>'
+role_url           'https://<%= @node[:chef][:server_fqdn] %>'
+
+<% unless @node[:chef][:server_token].to_s.empty? %>
+validation_token   '<%= @node[:chef][:server_token] %>'
+
+<% end %>
+cookbook_path      [ '/var/lib/chef/site-cookbooks', '/var/lib/chef/cookbooks' ]
+
+file_cache_path    '/var/lib/chef/cache'
+node_path          '/var/lib/chef/nodes'
+openid_store_path  '/var/lib/chef/openid/store'
+openid_cstore_path '/var/lib/chef/openid/cstore'
+search_index_path  '/var/lib/chef/search_index'
+role_path          '/var/lib/chef/roles'
+
+<% unless @node[:chef][:openid_providers].to_a.empty? %>
+authorized_openid_providers    [ '<%= @node[:chef][:openid_providers].join(', ') %>' ]
+<% end %>
+<% unless @node[:chef][:openid_identifiers].to_a.empty? %>
+authorized_openid_identifiers  [ '<%= @node[:chef][:openid_identifiers].join(', ') %>' ]
+<% end %>

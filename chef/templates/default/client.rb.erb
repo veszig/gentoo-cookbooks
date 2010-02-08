@@ -1,0 +1,20 @@
+Chef::Log::Formatter.show_time = true
+
+log_level          :info
+log_location       '/var/log/chef/chef-client.log'
+
+interval           <%= @node[:chef][:client_interval] %>
+splay              <%= @node[:chef][:client_splay] %>
+
+ssl_verify_mode    :verify_none
+
+registration_url   'https://<%= @node[:chef][:server_fqdn] %>'
+openid_url         'https://<%= @node[:chef][:server_fqdn] %>:444'
+template_url       'https://<%= @node[:chef][:server_fqdn] %>'
+remotefile_url     'https://<%= @node[:chef][:server_fqdn] %>'
+search_url         'https://<%= @node[:chef][:server_fqdn] %>'
+role_url           'https://<%= @node[:chef][:server_fqdn] %>'
+
+file_cache_path    '/var/lib/chef/cache'
+
+pid_file           '/var/run/chef/chef-client.pid'
