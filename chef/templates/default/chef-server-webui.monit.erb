@@ -1,0 +1,7 @@
+check process chef-server-webui with pidfile /var/run/chef/server-webui.main.pid
+  start program = "/etc/init.d/chef-server-webui start"
+  stop program = "/etc/init.d/chef-server-webui stop"
+  if failed host localhost port 4040 protocol http
+     with timeout 20 seconds
+     then restart
+  if 3 restarts within 5 cycles then timeout

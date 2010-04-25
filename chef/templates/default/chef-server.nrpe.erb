@@ -1,0 +1,2 @@
+command[check_proc_chef-server]=/usr/lib/nagios/plugins/check_procs -C chef-server -w 1:10 -c 1:20
+command[check_chef-server]=/usr/lib/nagios/plugins/check_http -H 127.0.0.1 -p 4000 -e '401 Unauthorized'

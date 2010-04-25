@@ -1,0 +1,2 @@
+command[check_proc_sshd]=/usr/lib/nagios/plugins/check_procs -c 1: -C sshd
+command[check_local_ssh]=/usr/lib/nagios/plugins/check_ssh -H localhost -p <%= @sshd_port %>

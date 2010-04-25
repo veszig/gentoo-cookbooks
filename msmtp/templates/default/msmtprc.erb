@@ -1,0 +1,13 @@
+account <%= @smtp_host.gsub(/[^a-z0-9]/i, "_") %>
+host <%= @smtp_host %>
+domain <%= @domain %>
+from <%= @smtp_from %>
+<% if @smtp_user.to_s != "" && @smtp_password.to_s != "" -%>
+auth on
+user <%= @smtp_user %>
+password <%= @smtp_password %>
+tls on
+<% end -%>
+keepbcc on
+syslog LOG_MAIL
+account default : <%= @smtp_host.gsub(/[^a-z0-9]/i, "_") %>

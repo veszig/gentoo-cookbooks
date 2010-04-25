@@ -1,10 +1,17 @@
-include_recipe 'portage'
+package "dev-db/couchdb" do
+  action :upgrade
+end
 
-package_keyword 'dev-db/couchdb'
-
-package 'dev-db/couchdb'
-
-service 'couchdb' do
+service "couchdb" do
   supports :status => true, :restart => true
   action [ :enable, :start ]
+  subscribes :restart, resources(:package => "dev-db/couchdb")
+end
+
+if node.recipe?("monit")
+  monit_check "couchdb"
+end
+
+if node.recipe?("nagios::nrpe")
+  nrpe_command "couchdb"
 end

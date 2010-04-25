@@ -1,0 +1,4 @@
+check process syslogd with pidfile /var/run/syslog-ng.pid
+  start program = "/etc/init.d/syslog-ng start"
+  stop program = "/etc/init.d/syslog-ng stop"
+  if 5 restarts within 5 cycles then timeout

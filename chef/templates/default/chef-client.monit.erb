@@ -1,0 +1,6 @@
+check process chef-client with pidfile /var/run/chef/client.pid
+  alert <%= @to %> only on { timeout }
+  start program = "/etc/init.d/chef-client start"
+  stop program = "/etc/init.d/chef-client stop"
+  if totalmem > 150 Mb then restart
+  if 3 restarts within 5 cycles then timeout

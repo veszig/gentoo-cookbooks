@@ -1,0 +1,2 @@
+command[check_proc_cron]=/usr/lib/nagios/plugins/check_procs -c 1:10 -C cron
+command[check_cron_lastrun]=/usr/lib/nagios/plugins/check_file_age -w 600 -c 1200 -f /tmp/cron_lastrun

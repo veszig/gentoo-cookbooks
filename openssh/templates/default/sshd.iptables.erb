@@ -1,0 +1,4 @@
+# Allow sshd with rate limit
+-A FWR -p tcp --dport <%= @sshd_port %> -m state --state NEW -m recent --set --name SSH --rsource
+-A FWR -p tcp --dport <%= @sshd_port %> -m state --state NEW -m recent --update --seconds 60 --hitcount 6 --rttl --name SSH --rsource -j LIMIT
+-A FWR -p tcp -m tcp --dport <%= @sshd_port %> -m state --state NEW -j ACCEPT

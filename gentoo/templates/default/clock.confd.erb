@@ -1,0 +1,35 @@
+# /etc/conf.d/clock
+
+# Set CLOCK to "UTC" if your hardware clock is set to UTC (also known as
+# Greenwich Mean Time).  If that clock is set to the local time, then
+# set CLOCK to "local".
+# Note that if you dual boot with Windows, then you should set it to
+# "local" because Windows always sets the hardware clock to local time.
+
+CLOCK="<%= @hwtimezone %>"
+
+# Select the proper timezone.  For valid values, peek inside of the
+# /usr/share/zoneinfo/ directory.  For example, some common values are
+# "America/New_York" or "EST5EDT" or "Europe/Berlin".  If you want to
+# manage /etc/localtime yourself, set this to "".
+
+TIMEZONE="<%= @timezone %>"
+
+# If you wish to pass any other arguments to hwclock during bootup,
+# you may do so here.
+
+CLOCK_OPTS=""
+
+# If you want to set the Hardware Clock to the current System Time (software
+# clock) during shutdown, then say "yes" here.
+
+CLOCK_SYSTOHC="<%= %w(yes true on 1).include?(@synchwclock.to_s) ? "yes" : "no" %>"
+
+
+### ALPHA SPECIFIC OPTIONS ###
+
+# If your alpha uses the SRM console, set this to "yes".
+SRM="no"
+
+# If your alpha uses the ARC console, set this to "yes".
+ARC="no"

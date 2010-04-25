@@ -1,1 +1,1 @@
-include_recipe 'chef::client'
+include_recipe "chef::client"

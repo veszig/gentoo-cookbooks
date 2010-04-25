@@ -1,0 +1,65 @@
+server {
+<% if %w(yes true on 1).include?(@params[:default].to_s) -%>
+  listen 80 default;
+  server_name _;
+  server_name_in_redirect off;
+<% else -%>
+  listen *:80;
+  server_name <%= [@params[:name], @params[:server_alias]].flatten.compact.uniq.join(" ") %>;
+<% end -%>
+
+  access_log /var/log/nginx/<%= @params[:name] %>.access.log main;
+  error_log  /var/log/nginx/<%= @params[:name] %>.error.log info;
+
+  root <%= @params[:docroot] %>;
+<% if %w(yes true on 1).include?(@params[:passenger].to_s) -%>
+
+  passenger_enabled on;
+  rails_spawn_method smart;
+<% end -%>
+<% if %w(yes true on 1).include?(@params[:php].to_s) -%>
+
+  index index.php index.html index.htm;
+  location ~ .*\.php$ {
+    include /etc/nginx/fastcgi.conf;
+    fastcgi_pass  127.0.0.1:8000;
+    fastcgi_index index.php;
+  }
+<% end -%>
+}
+<% if @params[:ssl] -%>
+
+server {
+<% if %w(yes true on 1).include?(@params[:default].to_s) -%>
+  listen 443 default;
+  server_name _;
+  server_name_in_redirect off;
+<% else -%>
+  listen *:443;
+  server_name <%= [@params[:name], @params[:server_alias]].flatten.compact.uniq.join(" ") %>;
+<% end -%>
+
+  access_log /var/log/nginx/<%= @params[:name] %>.access.log main;
+  error_log  /var/log/nginx/<%= @params[:name] %>.error.log info;
+
+  root <%= @params[:docroot] %>;
+<% if %w(yes true on 1).include?(@params[:passenger].to_s) -%>
+
+  passenger_enabled on;
+  rails_spawn_method smart;
+<% end -%>
+<% if %w(yes true on 1).include?(@params[:php].to_s) -%>
+
+  index index.php index.html index.htm;
+  location ~ .*\.php$ {
+    include /etc/nginx/fastcgi.conf;
+    fastcgi_pass  127.0.0.1:8000;
+    fastcgi_index index.php;
+  }
+<% end -%>
+
+  ssl on;
+  ssl_certificate <%= @params[:ssl_pem] %>;
+  ssl_certificate_key <%= @params[:ssl_key] %>;
+}
+<% end -%>

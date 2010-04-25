@@ -1,0 +1,8 @@
+<%
+rule = "-A FWR -s #{@subject}"
+rule += " -p #{@proto} -m #{@proto}" if @proto
+rule += " --dport #{@port}" if @port
+rule += " -j LOGDROP"
+%>
+# Ban <%= @subject %>
+<%= rule %>

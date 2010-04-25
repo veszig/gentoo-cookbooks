@@ -1,0 +1,13 @@
+/var/log/audit.log /var/log/auth.log /var/log/avc.log /var/log/cron.log /var/log/daemon.log /var/log/debug /var/log/grsec.log /var/log/lpr.log /var/log/mail.* /var/log/messages /var/log/news/* /var/log/pax.log /var/log/syslog /var/log/user.log /var/log/uucp.log {
+    daily
+    rotate 7
+    compress
+    delaycompress
+    missingok
+    nomail
+    sharedscripts
+    olddir /var/log/old
+    postrotate
+        /etc/init.d/syslog-ng reload > /dev/null 2>&1 || true
+    endscript
+}

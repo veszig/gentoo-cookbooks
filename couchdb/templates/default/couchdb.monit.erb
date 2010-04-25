@@ -1,0 +1,5 @@
+check process couchdb with pidfile /var/run/couchdb/couchdb.pid
+  start program = "/etc/init.d/couchdb start"
+  stop program = "/etc/init.d/couchdb stop"
+  if failed url http://localhost:5984/ and content == '"couchdb"' then restart
+  if 3 restarts within 5 cycles then timeout

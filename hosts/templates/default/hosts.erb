@@ -1,0 +1,9 @@
+127.0.0.1        <%= @localhosts.join(" ") %>
+
+<% @hosts.keys.sort { |a,b| a.split(".").map { |x| x.to_i } <=> b.split(".").map { |x| x.to_i } }.each do |ip| -%>
+<% if @localips.include?(ip) || !(@hosts[ip] & @localhosts).empty? -%>
+#<%= sprintf("%-16s", ip) + @hosts[ip].flatten.uniq.compact.join(" ") %>
+<% else -%>
+<%= sprintf("%-17s", ip) + @hosts[ip].flatten.uniq.compact.join(" ") %>
+<% end -%>
+<% end -%>

@@ -1,0 +1,4 @@
+# Allow nginx
+<% @ports.sort { |a,b| a.to_i <=> b.to_i }.each do |port| -%>
+-A FWR -p tcp -m tcp --dport <%= port %> -m state --state NEW -j ACCEPT
+<% end -%>

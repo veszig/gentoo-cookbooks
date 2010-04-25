@@ -1,0 +1,5 @@
+<% @known_keys.keys.map { |rsa_key|
+  @known_keys[rsa_key].flatten.compact.sort.uniq.join(",") + " ssh-rsa " + rsa_key
+}.sort.each do |line| -%>
+<%= line %>
+<% end -%>

@@ -1,0 +1,1 @@
+command[check_amqp]=/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 5672 -E -s 'AMQP\r\n\r\n\r\n' -d 1 -e 'AMQP'

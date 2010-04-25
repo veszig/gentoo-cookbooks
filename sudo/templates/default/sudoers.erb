@@ -1,0 +1,21 @@
+Defaults env_reset,!lecture,tty_tickets,!fqdn
+
+root ALL=(ALL) ALL
+<% @sudoers_users.each do |user| -%>
+<%= user %> ALL=(ALL) ALL
+<% end -%>
+<% @sudoers_groups.each do |group| -%>
+%<%= group %> ALL=(ALL) ALL
+<% end -%>
+
+<%
+@sudoers_commands.map { |command|
+  if command[:group].to_s =~ /\A\S+\Z/
+    "%#{command[:group]} ALL=#{command[:nopasswd] ? "NOPASSWD:" : "(ALL)"} #{command[:path]}"
+  elsif command[:user].to_s =~ /\A\S+\Z/
+    "#{command[:user]} ALL=#{command[:nopasswd] ? "NOPASSWD:" : "(ALL)"} #{command[:path]}"
+  end
+}.compact.sort.each do |line|
+-%>
+<%= line %>
+<% end -%>

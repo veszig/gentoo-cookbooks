@@ -1,0 +1,40 @@
+USE="<%= @use_flags.sort.uniq.join(" ") %>"
+
+CHOST="<%= @chost %>"
+CFLAGS="<%= @cflags %>"
+CXXFLAGS="${CFLAGS}"
+MAKEOPTS="<%= @makeopts.sort.uniq.join(" ") %>"
+
+<%
+[
+  [ "FEATURES", @features ],
+  [ "EMERGE_DEFAULT_OPTS", @emerge_options ],
+  [ "PORTDIR_OVERLAY", @overlays ],
+  [ "COLLISION_IGNORE", @collision_ignores ],
+  [ "ACCEPT_LICENSE", @licenses ],
+  [ "RUBY_TARGETS", @ruby_targets ]
+].select { |v,a| !a.empty? }.each do |variable,attributes|
+-%>
+<%= variable %>="<%= attributes.sort.uniq.join(" ") %>"
+<% end -%>
+
+<% @use_expands.keys.sort.each do |e| -%>
+<%= e.to_s.upcase %>="<%= @use_expands[e].join(" ") %>"
+
+<% end -%>
+PORT_LOGDIR="/var/log/portage"
+PORTAGE_ELOG_CLASSES="warn error log"
+<% if @elog_mailuri.to_s =~ /\A\S+@\S+ \S+\Z/ && @elog_mailfrom.to_s =~ /\A\S+@\S+\Z/ -%>
+PORTAGE_ELOG_SYSTEM="save mail_summary"
+PORTAGE_ELOG_MAILURI="<%= @elog_mailuri %>"
+PORTAGE_ELOG_MAILFROM="<%= @elog_mailfrom %>"
+PORTAGE_ELOG_MAILSUBJECT="[portage] ebuild log for \${PACKAGE} on \${HOST}"
+<% else -%>
+PORTAGE_ELOG_SYSTEM="save"
+<% end -%>
+
+SYNC="<%= @rsync_mirror %>"
+GENTOO_MIRRORS="<%= @distfile_mirrors.uniq.join(" ") %>"
+<% unless @portage_binhost.to_s == "" -%>
+PORTAGE_BINHOST = "<%= @portage_binhost %>"
+<% end -%>

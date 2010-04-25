@@ -1,0 +1,2 @@
+command[check_couchdb]=/usr/lib/nagios/plugins/check_http -H 127.0.0.1 -p 5984 -s '"couchdb"'
+command[check_proc_couchdb]=/usr/lib/nagios/plugins/check_procs -c 1: -C couchdb

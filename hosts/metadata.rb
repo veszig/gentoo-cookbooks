@@ -1,0 +1,5 @@
+maintainer       "Gábor Vészi"
+maintainer_email "veszig@done.hu"
+license          "Apache 2.0"
+description      "Manages /etc/hosts based on search indexes and data bags"
+version          "0.1"

@@ -1,0 +1,3 @@
+command[check_procs_running]=/usr/lib/nagios/plugins/check_procs -w 20 -c 40 -s R
+command[check_procs_total]=/usr/lib/nagios/plugins/check_procs -w 600 -c 700
+command[check_procs_zombie]=/usr/lib/nagios/plugins/check_procs -w 5 -c 10 -s Z

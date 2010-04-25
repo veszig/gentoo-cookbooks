@@ -1,0 +1,18 @@
+<% unless @port.to_s == "" || @port.to_s == "22" -%>
+Port <%= @port %>
+<% end -%>
+Protocol 2
+SyslogFacility AUTH
+LogLevel INFO
+PermitRootLogin <%= %w(true yes on 1).include?(@permit_root_login.to_s) ? "yes" : "no" %>
+PubkeyAuthentication yes
+PasswordAuthentication <%= %w(true yes on 1).include?(@password_auth.to_s) ? "yes" : "no" %>
+PermitEmptyPasswords no
+UsePAM yes
+ClientAliveInterval 30
+ClientAliveCountMax 3
+UseDNS no
+Subsystem sftp /usr/lib/misc/sftp-server
+<% unless @allow_users.empty? -%>
+AllowUsers <%= @allow_users.sort.uniq.compact.join(" ") %>
+<% end -%>

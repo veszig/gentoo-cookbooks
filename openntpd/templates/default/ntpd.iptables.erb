@@ -1,0 +1,2 @@
+# Allow ntpd
+-A FWR -p udp -m udp --dport 123 -m state --state NEW -j ACCEPT

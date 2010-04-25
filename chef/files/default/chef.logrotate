@@ -1,0 +1,9 @@
+/var/log/chef/*.log {
+    daily
+    rotate 7
+    compress
+    delaycompress
+    missingok
+    nomail
+    copytruncate
+}

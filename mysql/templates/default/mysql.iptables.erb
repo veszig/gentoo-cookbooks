@@ -1,0 +1,4 @@
+# Allow MySQL
+<% @ips.sort.each do |ip| -%>
+-A FWR -s <%= ip %> -p tcp -m tcp -m state --state NEW --dport 3306 -j ACCEPT
+<% end -%>

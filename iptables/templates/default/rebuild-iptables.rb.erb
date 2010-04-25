@@ -1,0 +1,80 @@
+#!/usr/bin/env ruby
+
+# rebuild-iptables -- Construct an iptables rules file from fragments.
+
+# Based on rebuild-iptables by Russ Allbery and Digant C Kasundra
+# http://projects.puppetlabs.com/projects/puppet/wiki/Module_Iptables_Patterns
+
+def parse_fragment_file(file)
+  File.readlines(file).map { |line|
+    if line =~ /\A\s*include\s+(\S+)\n?\Z/
+      included = $1
+      # don't expand absolute paths
+      if included !~ /\A\//
+        included = File.expand_path(included, File.basename(file))
+      end
+      if included == file
+        puts "WARNING: include loop detected in file #{file}"
+      else
+        parse_fragment_file(included)
+      end
+    else
+      line
+    end
+  }.flatten
+end
+
+def array_lines_differ(a, b)
+  a.compact.select { |line| line !~ /\A(\s*#|\n?\Z)/ } !=
+    b.compact.select { |line| line !~ /\A(\s*#|\n?\Z)/ }
+end
+
+def install_gentoo(fragments)
+  iptables_file = File.readlines('/etc/conf.d/iptables').map { |line|
+    $1 if line =~ /\A\s*IPTABLES_SAVE=['"]?(.*?)['"]?\n?\Z/
+  }.compact.last
+  if !File.exists?(iptables_file) ||
+    array_lines_differ(File.readlines(iptables_file), fragments)
+    File.open(iptables_file, 'w') { |f| f << fragments }
+    system("/etc/init.d/iptables reload")
+  end
+end
+
+fragments = [
+  "*filter\n",
+  ":INPUT ACCEPT\n",
+  ":FORWARD ACCEPT\n",
+  ":OUTPUT ACCEPT\n",
+  ":FWR -\n",
+  ":LOGDROP -\n",
+  ":LIMIT -\n",
+<% if @ulogd -%>
+  "-A LOGDROP -j ULOG --ulog-prefix nf-reject\n",
+  "-A LIMIT -j ULOG --ulog-prefix nf-limit-reject\n",
+<% end -%>
+  "-A LOGDROP -j REJECT --reject-with icmp-port-unreachable\n",
+  "-A LIMIT -j REJECT --reject-with icmp-port-unreachable\n",
+  "-A INPUT -j FWR\n",
+  "-A FWR -i lo -j ACCEPT\n"
+]
+
+Dir.glob('/etc/iptables.d/*').each { |f|
+  # skip chef backup files
+  next if f =~ /.+\.chef-[0-9]{4}[01][0-9][0-3][0-9][0-2][0-9][0-5][0-9][0-5][0-9]\Z/
+  fragments += parse_fragment_file(f)
+}
+
+fragments += [
+  "# Reject all remaining connections\n",
+  "-A FWR -p tcp -m tcp --tcp-flags SYN,RST,ACK SYN -j LOGDROP\n",
+  "-A FWR -p udp -j LOGDROP\n",
+  "COMMIT\n"
+]
+
+fragments += File.readlines('/etc/iptables.snat') if File.size?('/etc/iptables.snat')
+
+if File.file?('/etc/gentoo-release')
+  install_gentoo(fragments)
+else
+  puts 'ERROR: unsupported platform'
+end

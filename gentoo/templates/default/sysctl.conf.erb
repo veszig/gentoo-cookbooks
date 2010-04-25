@@ -1,0 +1,17 @@
+# /etc/sysctl.conf
+#
+# For more information on how this file works, please see
+# the manpages sysctl(8) and sysctl.conf(5).
+#
+# In order for this file to work properly, you must first
+# enable 'Sysctl support' in the kernel.
+#
+# Look in /proc/sys/ for all the things you can setup.
+#
+
+kernel.hostname = <%= @hostname %>
+kernel.domainname = <%= @domain %>
+
+<% @sysctl_variables.keys.sort.each do |sysctl_key| -%>
+<%= sysctl_key %> = <%= @sysctl_variables[sysctl_key] %>
+<% end -%>

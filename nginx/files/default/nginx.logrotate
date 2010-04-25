@@ -1,0 +1,14 @@
+/var/log/nginx/*log {
+    daily
+    rotate 7
+    compress
+    delaycompress
+    missingok
+    nomail
+    sharedscripts
+    olddir /var/log/nginx/old
+    create 0600 root root
+    postrotate
+        /etc/init.d/nginx reload > /dev/null 2>&1
+    endscript
+}

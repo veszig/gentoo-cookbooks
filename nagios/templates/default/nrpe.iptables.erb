@@ -1,0 +1,4 @@
+# Allow nrpe
+<% @ips.each do |ip| -%>
+-A FWR -s <%= ip %> -p tcp -m tcp -m state --state NEW --dport 5666 -j ACCEPT
+<% end -%>

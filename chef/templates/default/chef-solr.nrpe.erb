@@ -1,0 +1,3 @@
+command[check_proc_chef-solr]=/usr/lib/nagios/plugins/check_procs -C java -a solr -w 1:1 -c 1:2
+command[check_proc_chef-solr-indexer]=/usr/lib/nagios/plugins/check_procs -a chef-solr-indexer -w 1:1 -c 1:2
+command[check_chef-solr]=/usr/lib/nagios/plugins/check_http -H 127.0.0.1 -p 8983 -u '/solr/select/?indent=on&start=0&q=*:*&rows=5' -s '"X_CHEF_id_CHEF_X"'

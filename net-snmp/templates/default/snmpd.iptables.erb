@@ -1,0 +1,4 @@
+# Allow snmpd
+<% @external_monitoring_ips.each do |ip| -%>
+-A FWR -s <%= ip %>/32 -p udp -m udp --dport 161 -m state --state NEW -j ACCEPT
+<% end -%>

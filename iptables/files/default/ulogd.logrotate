@@ -1,0 +1,13 @@
+/var/log/ulogd.* {
+    daily
+    rotate 7
+    compress
+    delaycompress
+    missingok
+    nomail
+    sharedscripts
+    olddir /var/log/old
+    postrotate
+        /etc/init.d/ulogd restart > /dev/null
+    endscript
+}

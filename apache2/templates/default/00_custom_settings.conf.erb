@@ -1,7 +1,0 @@
-ServerName <%= @node[:fqdn] %>
-
-<% @node[:apache][:listen_ports].sort.each do |port| -%>
-Listen <%= port %>
-NameVirtualHost *:<%= port %>
-
-<% end -%>
