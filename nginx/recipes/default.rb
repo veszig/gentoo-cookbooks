@@ -1,7 +1,7 @@
 include_recipe "openssl::host_cert"
 include_recipe "gentoo::portage"
 
-gentoo_package_keywords "=www-servers/nginx-0.8.35"
+gentoo_package_keywords "=www-servers/nginx-0.8.36"
 
 nginx_modules = [
   "access", "auth_basic", "autoindex", "browser", "charset", "empty_gif",
