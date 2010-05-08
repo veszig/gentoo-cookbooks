@@ -2,7 +2,7 @@ include_recipe "gentoo::portage"
 include_recipe "git::client"
 
 # TODO find out why the git resource syncs on every run
-chef_overlay_reference = "00e58aa07732cdd1fd656b67aa5b1c7b11ab0732"
+chef_overlay_reference = "b1ec4647eab99e47ac49f7540c27e89655f82b4d"
 ref_file = "/usr/local/chef-overlay/.git/refs/heads/master"
 current_ref = File.size?(ref_file) ? File.read(ref_file).strip : ""
 
