@@ -36,5 +36,5 @@ PORTAGE_ELOG_SYSTEM="save"
 SYNC="<%= @rsync_mirror %>"
 GENTOO_MIRRORS="<%= @distfile_mirrors.uniq.join(" ") %>"
 <% unless @portage_binhost.to_s == "" -%>
-PORTAGE_BINHOST = "<%= @portage_binhost %>"
+PORTAGE_BINHOST="<%= @portage_binhost %>"
 <% end -%>
