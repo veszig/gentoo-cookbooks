@@ -17,7 +17,7 @@ end
 #   }
 begin
   data_bag("ssh_known_hosts").each { |id|
-    item = data_bag_item("hosts", id)
+    item = data_bag_item("ssh_known_hosts", id)
     known_keys[item["key"]] ||= []
     known_keys[item["key"]] += item["hosts"]
   }
