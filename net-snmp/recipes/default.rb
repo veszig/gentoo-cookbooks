@@ -26,7 +26,7 @@ template "/etc/snmp/snmpd.conf" do
   )
 end
 
-remote_file "/etc/conf.d/snmpd" do
+cookbook_file "/etc/conf.d/snmpd" do
   source "snmpd.confd"
   owner "root"
   group "root"

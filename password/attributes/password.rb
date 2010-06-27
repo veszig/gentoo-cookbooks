@@ -1,1 +1,1 @@
-set_unless[:password][:directory] = ""
+default[:password][:directory] = ""

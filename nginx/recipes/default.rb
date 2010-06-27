@@ -1,7 +1,8 @@
 include_recipe "openssl::host_cert"
 include_recipe "gentoo::portage"
 
-gentoo_package_keywords "=www-servers/nginx-0.8.36"
+gentoo_package_keywords "=www-servers/nginx-0.8.38-r1"
+gentoo_package_keywords "=app-vim/nginx-syntax-0.3.1" if node.recipe?("vim")
 
 nginx_modules = [
   "access", "auth_basic", "autoindex", "browser", "charset", "empty_gif",
@@ -21,7 +22,7 @@ if %w(yes true on 1).include?(node[:nginx][:fcgi_php].to_s)
     action :upgrade
   end
 
-  remote_file "/etc/conf.d/spawn-fcgi.php" do
+  cookbook_file "/etc/conf.d/spawn-fcgi.php" do
     source "spawn-fcgi.php.confd"
     owner "root"
     group "root"
@@ -30,12 +31,6 @@ if %w(yes true on 1).include?(node[:nginx][:fcgi_php].to_s)
 
   link "/etc/init.d/spawn-fcgi.php" do
     to "/etc/init.d/spawn-fcgi"
-  end
-
-  service "spawn-fcgi.php" do
-    supports :status => true, :restart => true
-    action [ :enable, :start ]
-    subscribes :restart, resources(:package => "www-servers/spawn-fcgi", :remote_file => "/etc/conf.d/spawn-fcgi.php")
   end
 end
 
@@ -85,13 +80,21 @@ directory "/var/www" do
   mode "0755"
 end
 
+if %w(yes true on 1).include?(node[:nginx][:fcgi_php].to_s)
+  service "spawn-fcgi.php" do
+    supports :status => true, :restart => true
+    action [ :enable, :start ]
+    subscribes :restart, resources(:package => "www-servers/spawn-fcgi", :cookbook_file => "/etc/conf.d/spawn-fcgi.php")
+  end
+end
+
 service "nginx" do
   supports :status => true, :restart => true, :reload => true
   action [ :enable, :start ]
   subscribes :reload, resources(:template => "/etc/nginx/nginx.conf")
   subscribes :restart, resources(:package => "www-servers/nginx")
   unless node[:ssl][:self_signed_host_cert]
-    subscribes :reload, resources(:remote_file => "/etc/ssl/private/#{node[:fqdn]}.pem", :remote_file => "/etc/ssl/private/#{node[:fqdn]}.key")
+    subscribes :reload, resources(:cookbook_file => "/etc/ssl/private/#{node[:fqdn]}.pem", :cookbook_file => "/etc/ssl/private/#{node[:fqdn]}.key")
   end
 end
 

@@ -19,7 +19,7 @@ end
 service "chef-server-webui" do
   supports :status => true, :restart => true
   action [ :enable, :start ]
-  subscribes :restart, resources(:package => "app-admin/chef-server-webui", :template => "/etc/chef/server.rb")
+  subscribes :restart, resources(:package => "app-admin/chef-server-webui", :template => "/etc/chef/webui.rb")
 end
 
 if node.recipe?("iptables")

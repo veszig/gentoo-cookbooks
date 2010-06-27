@@ -33,7 +33,7 @@ template "/etc/nagios/nrpe.cfg" do
   )
 end
 
-remote_file "/usr/local/sbin/nrpe_check_all_local" do
+cookbook_file "/usr/local/sbin/nrpe_check_all_local" do
   source "nrpe_check_all_local.sh"
   owner "root"
   group "root"

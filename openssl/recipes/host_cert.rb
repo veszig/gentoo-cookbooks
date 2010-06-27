@@ -14,7 +14,7 @@ end
 if %w(no false off 0).include?(node[:ssl][:self_signed_host_cert].to_s)
 
   %w(crt key pem).each { |ext|
-    remote_file "/etc/ssl/private/#{node[:fqdn]}.#{ext}" do
+    cookbook_file "/etc/ssl/private/#{node[:fqdn]}.#{ext}" do
       source "#{node[:ssl][:remote_host_cert_name]}.#{ext}"
       owner "root"
       group "ssl"

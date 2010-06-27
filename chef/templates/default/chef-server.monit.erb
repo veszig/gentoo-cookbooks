@@ -1,6 +1,6 @@
 check process chef-server with pidfile /var/run/chef/server.main.pid
-  start program = "/etc/init.d/chef-server start"
-  stop program = "/etc/init.d/chef-server stop"
+  start program = "/etc/init.d/chef-server-api start"
+  stop program = "/etc/init.d/chef-server-api stop"
   # if failed host localhost port 4000 protocol http
   #    with timeout 20 seconds
   #    then restart

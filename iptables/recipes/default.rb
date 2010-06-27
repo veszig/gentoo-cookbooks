@@ -1,6 +1,6 @@
 gentoo_package "net-firewall/iptables"
 
-remote_file "/etc/conf.d/iptables" do
+cookbook_file "/etc/conf.d/iptables" do
   source "iptables.confd"
   owner "root"
   group "root"

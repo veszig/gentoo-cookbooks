@@ -9,7 +9,7 @@ package "app-admin/syslog-ng" do
   action :upgrade
 end
 
-remote_file "/etc/syslog-ng/syslog-ng.conf" do
+cookbook_file "/etc/syslog-ng/syslog-ng.conf" do
   source "syslog-ng.conf"
   owner "root"
   group "root"
@@ -19,7 +19,7 @@ end
 service "syslog-ng" do
   supports :status => true, :restart => true, :reload => true
   action [:enable, :start]
-  subscribes :reload, resources(:remote_file => "/etc/syslog-ng/syslog-ng.conf")
+  subscribes :reload, resources(:cookbook_file => "/etc/syslog-ng/syslog-ng.conf")
   subscribes :restart, resources(:package => "app-admin/syslog-ng")
 end
 

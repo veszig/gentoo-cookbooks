@@ -1,6 +1,6 @@
 # http://dev.mysql.com/doc/refman/5.0/en/create-user.html
-def initialize(name, collection=nil, node=nil)
-  super(name, collection, node)
+def initialize(name, run_context=nil)
+  super(name, run_context)
   @action = :create
 end
 

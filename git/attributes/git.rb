@@ -1,2 +1,2 @@
-set_unless[:git][:client][:subverson] = false
-set_unless[:git][:client][:cvs] = false
+default[:git][:client][:subverson] = false
+default[:git][:client][:cvs] = false

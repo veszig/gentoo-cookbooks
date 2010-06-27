@@ -28,7 +28,7 @@ template "/etc/conf.d/hostname" do
   variables(:hostname => node[:hostname])
 end
 
-remote_file "/etc/securetty" do
+cookbook_file "/etc/securetty" do
   source "securetty"
   owner "root"
   group "root"
