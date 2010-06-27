@@ -6,8 +6,10 @@ localips = [node[:ipaddress]]
 hosts = {}
 
 search(:node, "*:*") do |n|
-  # TODO ignore RFC 1918 IP addresses on different LANs
-  hosts[n[:ipaddress]] = [n[:hostname], n[:fqdn], n[:dns_aliases]]
+  unless n[:ipaddress].nil?
+    # TODO ignore RFC 1918 IP addresses on different LANs
+    hosts[n[:ipaddress]] = [n[:hostname], n[:fqdn], n[:dns_aliases]]
+  end
 end
 
 # knife data bag create hosts
