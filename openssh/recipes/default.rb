@@ -22,19 +22,19 @@ service "sshd" do
   subscribes :restart, resources(:package => "net-misc/openssh")
 end
 
-if node.recipe?("iptables")
+if node.run_list?("recipe[iptables]")
   iptables_rule "sshd" do
     variables(:sshd_port => node[:sshd][:port])
   end
 end
 
-if node.recipe?("monit")
+if node.run_list?("recipe[monit]")
   monit_check "sshd" do
     variables(:sshd_port => node[:sshd][:port])
   end
 end
 
-if node.recipe?("nagios::nrpe")
+if node.run_list?("recipe[nagios::nrpe]")
   nrpe_command "sshd" do
     variables(:sshd_port => node[:sshd][:port])
   end

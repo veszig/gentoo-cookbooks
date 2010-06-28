@@ -6,7 +6,7 @@ unless node[:gentoo][:use_flags].include?("mysql")
   generate_make_conf "added mysql USE flag"
 end
 
-unless node.recipe?("mysql::server")
+unless node.run_list?("recipe[mysql::server]")
   gentoo_package "dev-db/mysql" do
     action :upgrade
     use "minimal"

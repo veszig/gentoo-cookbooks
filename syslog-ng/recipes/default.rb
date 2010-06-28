@@ -23,14 +23,14 @@ service "syslog-ng" do
   subscribes :restart, resources(:package => "app-admin/syslog-ng")
 end
 
-if node.recipe?("logrotate")
+if node.run_list?("recipe[logrotate]")
   logrotate_config "syslog-ng"
 end
 
-if node.recipe?("monit")
+if node.run_list?("recipe[monit]")
   monit_check "syslog-ng"
 end
 
-if node.recipe?("nagios::nrpe")
+if node.run_list?("recipe[nagios::nrpe]")
   nrpe_command "syslog-ng"
 end

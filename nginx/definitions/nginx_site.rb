@@ -10,11 +10,11 @@ define :nginx_site, :action => :enable, :default => false,
   if params[:template] == "nginx_site.conf.erb"
     unless node[:nginx][:ports].include?("80")
       node[:nginx][:ports] << "80"
-      set_iptables = true if node.recipe?("iptables")
+      set_iptables = true if node.run_list?("recipe[iptables]")
     end
     unless node[:nginx][:ports].include?("443")
       node[:nginx][:ports] << "443"
-      set_iptables = true if node.recipe?("iptables")
+      set_iptables = true if node.run_list?("recipe[iptables]")
     end
   end
 

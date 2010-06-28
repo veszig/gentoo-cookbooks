@@ -22,16 +22,16 @@ service "chef-server-webui" do
   subscribes :restart, resources(:package => "app-admin/chef-server-webui", :template => "/etc/chef/webui.rb")
 end
 
-if node.recipe?("iptables")
+if node.run_list?("recipe[iptables]")
   iptables_rule "chef-server-webui" do
-    action node.recipe?("chef::webui_proxy") ? :delete : :create
+    action node.run_list?("recipe[chef::webui_proxy]") ? :delete : :create
   end
 end
 
-if node.recipe?("monit")
+if node.run_list?("recipe[monit]")
   monit_check "chef-server-webui"
 end
 
-if node.recipe?("nagios::nrpe")
+if node.run_list?("recipe[nagios::nrpe]")
   nrpe_command "chef-server-webui"
 end

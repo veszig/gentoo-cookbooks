@@ -40,7 +40,7 @@ service "snmpd" do
   subscribes :restart, resources(:package => "net-analyzer/net-snmp")
 end
 
-if node.recipe?("iptables")
+if node.run_list?("recipe[iptables]")
   ips = [node[:snmpd][:monitoring_ips]].flatten.select { |i| i != "127.0.0.1" }
   iptables_rule "snmpd" do
     variables(:external_monitoring_ips => ips)
@@ -48,10 +48,10 @@ if node.recipe?("iptables")
   end
 end
 
-if node.recipe?("monit")
+if node.run_list?("recipe[monit]")
   monit_check "snmpd"
 end
 
-if node.recipe?("nagios::nrpe")
+if node.run_list?("recipe[nagios::nrpe]")
   nrpe_command "snmpd"
 end

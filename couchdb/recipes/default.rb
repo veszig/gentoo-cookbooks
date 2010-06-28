@@ -8,10 +8,10 @@ service "couchdb" do
   subscribes :restart, resources(:package => "dev-db/couchdb")
 end
 
-if node.recipe?("monit")
+if node.run_list?("recipe[monit]")
   monit_check "couchdb"
 end
 
-if node.recipe?("nagios::nrpe")
+if node.run_list?("recipe[nagios::nrpe]")
   nrpe_command "couchdb"
 end

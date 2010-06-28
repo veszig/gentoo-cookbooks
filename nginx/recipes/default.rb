@@ -2,7 +2,7 @@ include_recipe "openssl::host_cert"
 include_recipe "gentoo::portage"
 
 gentoo_package_keywords "=www-servers/nginx-0.8.38-r1"
-gentoo_package_keywords "=app-vim/nginx-syntax-0.3.1" if node.recipe?("vim")
+gentoo_package_keywords "=app-vim/nginx-syntax-0.3.1" if node.run_list?("recipe[vim]")
 
 nginx_modules = [
   "access", "auth_basic", "autoindex", "browser", "charset", "empty_gif",
@@ -98,7 +98,7 @@ service "nginx" do
   end
 end
 
-if node.recipe?("logrotate")
+if node.run_list?("recipe[logrotate]")
   directory "/var/log/nginx/old" do
     owner "root"
     group "root"
@@ -108,19 +108,19 @@ if node.recipe?("logrotate")
   logrotate_config "nginx"
 end
 
-if node.recipe?("iptables")
+if node.run_list?("recipe[iptables]")
   iptables_rule "nginx" do
     variables(:ports => [node[:nginx][:ports]].flatten)
   end
 end
 
-if node.recipe?("monit")
+if node.run_list?("recipe[monit]")
   monit_check "nginx" do
     variables(:ports => [node[:nginx][:ports]].flatten)
   end
 end
 
-if node.recipe?("nagios::nrpe")
+if node.run_list?("recipe[nagios::nrpe]")
   nrpe_command "nginx" do
     # master + workers
     variables(:processes => 1+node[:nginx][:worker_processes].to_i)

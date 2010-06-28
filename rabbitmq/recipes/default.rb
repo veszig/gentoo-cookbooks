@@ -14,10 +14,10 @@ service "rabbitmq" do
 end
 
 # TODO monit needs a pidfile, rabbitmq doesn't create any http://bit.ly/cfZWXC
-# if node.recipe?("monit")
+# if node.run_list?("recipe[monit]")
 #   monit_check "rabbitmq"
 # end
 
-if node.recipe?("nagios::nrpe")
+if node.run_list?("recipe[nagios::nrpe]")
   nrpe_command "rabbitmq"
 end

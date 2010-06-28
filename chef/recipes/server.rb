@@ -123,17 +123,17 @@ end
   end
 end
 
-if node.recipe?("iptables")
+if node.run_list?("recipe[iptables]")
   iptables_rule "chef-server" do
-    action node.recipe?("chef::server_proxy") ? :delete : :create
+    action node.run_list?("recipe[chef::server_proxy]") ? :delete : :create
   end
 end
 
-if node.recipe?("monit")
+if node.run_list?("recipe[monit]")
   %w(server solr).each { |s| monit_check "chef-#{s}" }
 end
 
-if node.recipe?("nagios::nrpe")
+if node.run_list?("recipe[nagios::nrpe]")
   nrpe_command "chef-server"
   nrpe_command "chef-solr"
 end

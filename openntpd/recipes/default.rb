@@ -19,12 +19,12 @@ service "ntpd" do
   subscribes :restart, resources(:package => "net-misc/openntpd", :template => "/etc/ntpd.conf")
 end
 
-if node.recipe?("iptables")
+if node.run_list?("recipe[iptables]")
   iptables_rule "ntpd" do
     action node[:ntpd][:listen_on].empty? ? :delete : :create
   end
 end
 
-if node.recipe?("nagios::nrpe")
+if node.run_list?("recipe[nagios::nrpe]")
   nrpe_command "ntpd"
 end

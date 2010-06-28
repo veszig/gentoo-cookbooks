@@ -41,7 +41,7 @@ mysql_database "test" do
   action :delete
 end
 
-if node.recipe?("iptables")
+if node.run_list?("recipe[iptables]")
   ips = [node[:mysql][:client_ips]].flatten.select { |i| i != "127.0.0.1" }
   iptables_rule "mysql" do
     variables(:ips => ips)
@@ -49,13 +49,13 @@ if node.recipe?("iptables")
   end
 end
 
-if node.recipe?("monit")
+if node.run_list?("recipe[monit]")
   monit_check "mysql" do
     variables(:bind_address => node[:mysql][:server][:bind_address])
   end
 end
 
-if node.recipe?("nagios::nrpe")
+if node.run_list?("recipe[nagios::nrpe]")
   nrpe_password = get_password("mysql/nrpe")
   mysql_user "nrpe" do
     password nrpe_password

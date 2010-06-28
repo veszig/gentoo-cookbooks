@@ -8,11 +8,11 @@ service "vixie-cron" do
   subscribes :restart, resources(:package => "sys-process/vixie-cron")
 end
 
-if node.recipe?("monit")
+if node.run_list?("recipe[monit]")
   monit_check "vixie-cron"
 end
 
-if node.recipe?("nagios::nrpe")
+if node.run_list?("recipe[nagios::nrpe]")
   cron "touch /tmp/cron_lastrun" do
     minute "*/5"
     user "nagios"

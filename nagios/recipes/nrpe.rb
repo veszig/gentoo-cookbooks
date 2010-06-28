@@ -9,7 +9,7 @@ end
 
 # on hardened systems only users in the wheel group are able to see other
 # users' processes -- nagios needs to see them to be able to monitor them
-if node.recipe?("gentoo::hardened")
+if node.run_list?("recipe[gentoo::hardened]")
   group "wheel" do
     members ["nagios"]
     append true
@@ -53,12 +53,12 @@ nrpe_command "time" do
   variables(:ntp_host => node[:ntpd][:pool] || "pool.ntp.org")
 end
 
-if node.recipe?("iptables")
+if node.run_list?("recipe[iptables]")
   external_ips = [node[:nagios][:nrpe][:monitoring_ips]].flatten - ["127.0.0.1"]
   iptables_rule "nrpe" do
     variables(:ips => external_ips)
   end
 end
 
-if node.recipe?("monit")
+if node.run_list?("recipe[monit]")
 end

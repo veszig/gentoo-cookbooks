@@ -17,6 +17,6 @@ service "ulogd" do
   subscribes :restart, resources(:package => "app-admin/ulogd")
 end
 
-if node.recipe?("logrotate")
+if node.run_list?("recipe[logrotate]")
   logrotate_config "ulogd"
 end

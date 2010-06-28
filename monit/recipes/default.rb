@@ -28,6 +28,6 @@ service "monit" do
   ignore_failure true
 end
 
-if node.recipe?("nagios::nrpe")
+if node.run_list?("recipe[nagios::nrpe]")
   nrpe_command "monit"
 end

@@ -1,4 +1,6 @@
-gentoo_package "net-firewall/iptables"
+gentoo_package "net-firewall/iptables" do
+  keywords "=net-firewall/iptables-1.4.8-r1"
+end
 
 cookbook_file "/etc/conf.d/iptables" do
   source "iptables.confd"
@@ -23,7 +25,7 @@ template "/usr/local/sbin/rebuild-iptables" do
   owner "root"
   group "root"
   mode "0700"
-  variables(:ulogd => node.recipe?("iptables::ulogd"))
+  variables(:ulogd => node.run_list?("recipe[iptables::ulogd]"))
 end
 
 iptables_rule "all_established"

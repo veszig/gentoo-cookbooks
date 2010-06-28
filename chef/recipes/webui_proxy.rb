@@ -2,13 +2,13 @@ include_recipe "nginx"
 
 unless node[:nginx][:ports].include?(node[:chef][:server][:webui_proxy_port])
   node[:nginx][:ports] << node[:chef][:server][:webui_proxy_port]
-  if node.recipe?("iptables")
+  if node.run_list?("recipe[iptables]")
     iptables_rule "nginx" do
       cookbook "nginx"
       variables(:ports => [node[:nginx][:ports]].flatten)
     end
   end
-  if node.recipe?("monit")
+  if node.run_list?("recipe[monit]")
     monit_check "nginx" do
       cookbook "nginx"
       variables(:ports => [node[:nginx][:ports]].flatten)

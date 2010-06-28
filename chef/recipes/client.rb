@@ -23,7 +23,7 @@ package "app-admin/chef" do
   action :upgrade
 end
 
-if node.recipe?("chef::server")
+if node.run_list?("recipe[chef::server]")
   node[:chef][:client][:server_url] = "http://127.0.0.1:4000"
 else
   file "/etc/chef/validation.pem" do
@@ -38,7 +38,7 @@ if %w(yes true on 1).include?(node[:chef][:syslog].to_s)
     action :upgrade
     keywords "=dev-ruby/SyslogLogger-1.4.0"
   end
-elsif node.recipe?("logrotate")
+elsif node.run_list?("recipe[logrotate]")
   # TODO eliminate copytuncate http://tickets.opscode.com/browse/CHEF-1116
   logrotate_config "chef"
 end
@@ -70,7 +70,7 @@ end
 
 directory "/var/lib/chef/cache" do
   owner "root"
-  group node.recipe?("chef::server") ? "chef" : "root"
+  group node.run_list?("recipe[chef::server]") ? "chef" : "root"
   mode "0770"
 end
 
@@ -81,12 +81,12 @@ file "/var/log/chef/client.log" do
   only_if { File.size?("/var/log/chef/client.log") }
 end
 
-if node.recipe?("monit")
+if node.run_list?("recipe[monit]")
   monit_check "chef-client" do
     variables(:to => node[:monit][:alert_mail_to])
   end
 end
 
-if node.recipe?("nagios::nrpe")
+if node.run_list?("recipe[nagios::nrpe]")
   nrpe_command "chef-client"
 end
