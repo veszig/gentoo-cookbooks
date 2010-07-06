@@ -139,7 +139,7 @@ module Opscode
           '--format "<category>\t<name>\t<installedversions:VERSION>\t<bestversion:VERSION>\n"',
           package_name.count("/") > 0 ? "--category-name" : "--name", package_name].join(" ")
 
-        eix_out = eix_strderr = nil
+        eix_out = eix_stderr = nil
 
         Chef::Log.debug("Calling `#{query_command}`.")
         status = Chef::Mixin::Command.popen4(query_command) { |pid,stdin,stdout,stderr|
