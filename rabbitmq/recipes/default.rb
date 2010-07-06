@@ -1,7 +1,6 @@
 include_recipe "gentoo::portage"
-include_recipe "chef::overlay"
 
-gentoo_package_keywords "=net-misc/rabbitmq-server-1.7.2-r2"
+gentoo_package_keywords "=net-misc/rabbitmq-server-1.8.0"
 
 package "net-misc/rabbitmq-server" do
   action :upgrade

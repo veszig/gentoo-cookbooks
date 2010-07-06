@@ -1,9 +1,8 @@
 include_recipe "gentoo::portage"
-include_recipe "chef::overlay"
 
-gentoo_package_keywords "=app-admin/chef-0.9.4"
+gentoo_package_keywords "=app-admin/chef-0.9.6"
 gentoo_package_keywords "=dev-ruby/abstract-1.0.0"
-gentoo_package_keywords "=dev-ruby/bunny-0.6.0"
+gentoo_package_keywords "=dev-ruby/bunny-0.6.0-r1"
 gentoo_package_keywords "=dev-ruby/erubis-2.6.5"
 gentoo_package_keywords "=dev-ruby/extlib-0.9.15"
 gentoo_package_keywords "=dev-ruby/highline-1.5.2-r1"
